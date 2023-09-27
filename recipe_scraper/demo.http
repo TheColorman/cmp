@@ -1,0 +1,3 @@
+
+GET https://hellofresh.dk/gw/recipes/recipes?skip=0&take=1&country=DK HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTgzNzQ1MjQsImlhdCI6MTY5NTc0NDc4MSwiaXNzIjoic2VuZiIsImp0aSI6IjNiZDY3YzEyLWJiYWItNDNmMi1hMjdjLTY5N2RlM2M4MTNkZCJ9.s3GA6BEvvzciz6-8ZQvkpeCoEmSNH-efj024k81_C0s
