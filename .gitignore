@@ -1,0 +1,5 @@
+out/
+node_modules/
+**/token.txt
+recipe_scraper/recipes/*.json
+db.sqlite
