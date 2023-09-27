@@ -1,6 +1,6 @@
 {
-    "name": "selfresh",
-    "description": "Danish HelloFresh meal plan builder",
+    "name": "cmp",
+    "description": "Colorman Meal Planner",
     "authors": "Colorman",
     "version": "0.0.1",
     "scripts": {
