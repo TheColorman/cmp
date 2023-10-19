@@ -1,2 +1,46 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import type { Recipe } from '../app';
+	import { resolveImage, resolveRecipeUrl } from '$lib/db';
+
+	let recipes: Promise<Recipe[]>;
+	onMount(() => {
+		// Fetch in onMount
+		recipes = fetch('/api/recipes?order=averageRating&sort=DESC&test[]=a&test[]=b').then((r) =>
+			r.json()
+		);
+	});
+</script>
+
+{#if recipes}
+	{#await recipes}
+		<p>loading...</p>
+	{:then recipes}
+		<div class="flex flex-wrap gap-4">
+			{#each recipes as recipe}
+				<div class="w-60 border-2 rounded-md p-1 px-2">
+					<a href={resolveRecipeUrl(recipe.id, recipe.slug)} target="_blank" rel="noreferrer">
+						<h2 class="font-bold">
+							{recipe.name}
+						</h2>
+						<p class="font-thin">{recipe.headline}</p>
+						{#if recipe.imagePath}
+							<img
+								src={resolveImage(recipe.imagePath, {
+									c: 'fill',
+									f: 'auto',
+									fl: 'lossy',
+									h: 200,
+									w: 300,
+									q: 'auto'
+								})}
+								alt="food"
+								class="rounded-b-md"
+							/>
+						{/if}
+					</a>
+				</div>
+			{/each}
+		</div>
+	{/await}
+{/if}
