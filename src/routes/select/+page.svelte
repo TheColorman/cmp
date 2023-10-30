@@ -44,7 +44,7 @@
 			const index = $ingredients.findIndex((i) => i.id === ingredient.id);
 			if (index === -1) {
 				ingredients.update((i: IngredientYield[]) => [...i, ingredient]);
-				have.update((h: number[]) => [...h, ingredient.amount]);
+				have.update((h: number[]) => [...h, 0]);
 				continue;
 			}
 			$ingredients[index].amount += ingredient.amount;
@@ -60,14 +60,11 @@
 			const index = $ingredients.findIndex((i) => i.id === ingredient.id);
 			$ingredients[index].amount -= ingredient.amount;
 			if ($ingredients[index].amount <= 0) {
-				console.log('all gone!');
 				ingredients.update((i: IngredientYield[]) => [...i.slice(0, index), ...i.slice(index + 1)]);
 				have.update((h: number[]) => [...h.slice(0, index), ...h.slice(index + 1)]);
 			}
 		}
 	}
-
-	$: console.log($ingredients);
 </script>
 
 <div class="flex gap-4">

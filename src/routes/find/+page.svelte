@@ -80,7 +80,7 @@
 			}
 			$ingredientsStore[index].amount += ingredient.amount;
 		}
-		haveStore.update((h) => [...h, ...ingredients.map((i: IngredientYield) => i.amount)]);
+		haveStore.update((h) => [...h, ...ingredients.map((i: IngredientYield) => 0)]);
 
 		goto(`/select`);
 	}
