@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { IngredientPartial, Recipe } from '../../app';
+	import type { IngredientYield, IngredientPartial, Recipe } from '../../app';
 	import { resolveImage, resolveRecipeUrl } from '$lib/db';
+	import {
+		recipes as recipesStore,
+		ingredients as ingredientsStore,
+		have as haveStore
+	} from '$lib/stores/selection';
+	import { goto } from '$app/navigation';
 
 	let textsearch = '';
 	let ingredients: Promise<IngredientPartial[]> | undefined;
@@ -39,7 +45,6 @@
 	let recipes: Promise<Recipe[]>;
 	let fetched = 0;
 	function searchRecipes(next?: boolean) {
-		console.log(numIngredients, addedIngredients);
 		// Fetch in onMount
 		const res = fetch('/api/recipes', {
 			body: JSON.stringify({
@@ -59,6 +64,25 @@
 			recipes = res;
 		}
 		fetched += 10;
+	}
+
+	async function selectRecipe(recipe: Recipe) {
+		const ingredients = await fetch(`/api/recipe/ingredients?recipeId=${recipe.id}&yields=2`).then(
+			(r) => r.json()
+		);
+		recipesStore.update((r) => [...r, recipe]);
+		for (const ingredient of ingredients) {
+			const index = $ingredientsStore.findIndex((i: IngredientYield) => i.id === ingredient.id);
+			if (index === -1) {
+				ingredientsStore.update((i: IngredientYield[]) => [...i, ingredient]);
+				haveStore.update((h: number[]) => [...h, ingredient.amount]);
+				continue;
+			}
+			$ingredientsStore[index].amount += ingredient.amount;
+		}
+		haveStore.update((h) => [...h, ...ingredients.map((i: IngredientYield) => i.amount)]);
+
+		goto(`/select`);
 	}
 </script>
 
@@ -161,7 +185,7 @@
 		<div class="flex flex-wrap gap-4">
 			{#each recipes as recipe}
 				<div class="w-60 border-2 rounded-md p-1 px-2">
-					<a href={resolveRecipeUrl(recipe.id, recipe.slug)} target="_blank" rel="noreferrer">
+					<button on:click={() => selectRecipe(recipe)}>
 						<h2 class="font-bold">
 							{recipe.name}
 						</h2>
@@ -180,7 +204,7 @@
 								class="rounded-b-md"
 							/>
 						{/if}
-					</a>
+					</button>
 				</div>
 			{/each}
 		</div>

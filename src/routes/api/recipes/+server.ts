@@ -16,7 +16,7 @@ export const GET: RequestHandler = ({ locals, url }) => {
 	}
 
 	return json(
-		locals.db.recipes.get({
+		locals.db.recipes.getAll({
 			skip,
 			take,
 			order: order || undefined,

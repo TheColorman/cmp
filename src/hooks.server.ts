@@ -1,6 +1,6 @@
 import Sqlite3Database from 'better-sqlite3';
 import type { Handle } from '@sveltejs/kit';
-import type { IngredientID, IngredientPartial, Recipe } from './app';
+import type { IngredientID, IngredientPartial, Recipe, YieldPartial } from './app';
 
 const db = new Sqlite3Database('src/lib/db.sqlite'); // no relative paths huh
 
@@ -25,6 +25,18 @@ function getRecipes({
 	const params: (string | number)[] = [take, skip];
 
 	return db.prepare(query).all(params) as Recipe[];
+}
+
+function getRecipe(id: string) {
+	const query = `
+	SELECT
+		averageRating, description, difficulty, headline, id, imagePath, slug, name, prepTime, totalTime, recipeYield
+	FROM recipes
+	WHERE id = ?
+	`;
+	const params: (string | number)[] = [id];
+
+	return db.prepare(query).get(params) as Recipe;
 }
 
 function getRecipesWithIngredients({
@@ -60,7 +72,6 @@ function getRecipesWithIngredients({
 	LIMIT ? OFFSET ?
 	`;
 	const params: (string | number)[] = [...ingredients, requiredCount, take, skip];
-	console.log(qeury, params);
 
 	return db.prepare(qeury).all(params) as Recipe[];
 }
@@ -92,9 +103,32 @@ function searchIngredients({
 	return db.prepare(query).all(params) as IngredientPartial[];
 }
 
+function getRecipeIngredientYield(recipeId: string, yields: 2 | 4) {
+	const query = `
+	SELECT
+		ingredients.id,
+		ingredients.slug,
+		ingredients.type,
+		ingredients.name,
+		ingredients.internalName,
+		ingredients.imagePath,
+		ry.amount,
+		ry.unit
+	FROM recipes_ingredients ri
+	JOIN ingredients ON ri.ingredientId = ingredients.id
+	JOIN recipes_yields ry ON ry.recipeId = ri.recipeId AND ry.ingredientId = ri.ingredientId
+	WHERE ri.recipeId = ? AND ry.yields = ?
+	`;
+	const params: (string | number)[] = [recipeId, yields];
+
+	return db.prepare(query).all(params) as (IngredientPartial & YieldPartial)[];
+}
+
 export const dbHelpers = {
 	recipes: {
-		get: getRecipes,
+		getAll: getRecipes,
+		get: getRecipe,
+		getIngredients: getRecipeIngredientYield,
 		filter: {
 			ingredients: getRecipesWithIngredients
 		},

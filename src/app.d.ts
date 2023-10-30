@@ -54,4 +54,11 @@ export type IngredientPartial = {
 	imagePath?: string;
 };
 
+export type YieldPartial = {
+	amount: number;
+	unit: string;
+};
+
+export type IngredientYield = IngredientPartial & YieldPartial;
+
 export {};
