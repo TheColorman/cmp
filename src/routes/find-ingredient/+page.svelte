@@ -6,7 +6,7 @@
 		recipes as recipesStore,
 		ingredients as ingredientsStore,
 		have as haveStore
-	} from '$lib/stores/selection';
+	} from '$lib/stores/stores';
 	import { goto } from '$app/navigation';
 
 	let textsearch = '';

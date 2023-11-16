@@ -1,6 +1,6 @@
 import Sqlite3Database from 'better-sqlite3';
 import type { Handle } from '@sveltejs/kit';
-import type { IngredientID, IngredientPartial, Recipe, YieldPartial } from './app';
+import type { IngredientID, IngredientPartial, Recipe, RecipePartial, YieldPartial } from './app';
 
 const db = new Sqlite3Database('src/lib/db.sqlite'); // no relative paths huh
 
@@ -103,6 +103,35 @@ function searchIngredients({
 	return db.prepare(query).all(params) as IngredientPartial[];
 }
 
+function searchRecipes({
+	term,
+	skip,
+	take
+}: {
+	term: string;
+	skip: number;
+	take: number;
+}): RecipePartial[] {
+	const query = `
+	SELECT
+		recipes.id,
+		recipes.description,
+		recipes.headline,
+		recipes.name,
+		recipes.seoDescription,
+		recipes.slug,
+		recipes.imagePath
+	FROM recipes_fts
+	JOIN recipes ON recipes_fts.id = recipes.id
+	WHERE recipes_fts MATCH ?
+	ORDER BY recipes.averageRating DESC
+	LIMIT ? OFFSET ?
+	`;
+	const params: (string | number)[] = [`${term}*`, take, skip];
+
+	return db.prepare(query).all(params) as RecipePartial[];
+}
+
 function getRecipeIngredientYield(recipeId: string, yields: 2 | 4) {
 	const query = `
 	SELECT
@@ -129,6 +158,7 @@ export const dbHelpers = {
 		getAll: getRecipes,
 		get: getRecipe,
 		getIngredients: getRecipeIngredientYield,
+		search: searchRecipes,
 		filter: {
 			ingredients: getRecipesWithIngredients
 		},

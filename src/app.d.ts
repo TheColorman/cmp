@@ -13,12 +13,13 @@ declare global {
 	}
 }
 
+type RecipeID = string;
 export type Recipe = {
 	averageRating?: number;
 	description?: string;
 	difficulty?: number;
 	headline?: string;
-	id: string;
+	id: RecipeID;
 	imagePath?: string;
 	slug?: string;
 	name?: string;
@@ -51,6 +52,16 @@ export type IngredientPartial = {
 	type: string;
 	name: string;
 	internalName?: string;
+	imagePath?: string;
+};
+
+export type RecipePartial = {
+	id: RecipeID;
+	description?: string;
+	headline?: string;
+	name?: string;
+	seoDescription?: string;
+	slug?: string;
 	imagePath?: string;
 };
 

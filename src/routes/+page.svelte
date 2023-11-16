@@ -6,16 +6,23 @@
 	let recipes: Promise<Recipe[]>;
 	onMount(() => {
 		// Fetch in onMount
-		recipes = fetch('/api/recipes?order=averageRating&sort=DESC&test[]=a&test[]=b').then((r) =>
-			r.json()
-		);
+		recipes = fetch('/api/recipes?order=averageRating&sort=DESC').then((r) => r.json());
 	});
 </script>
+
+<a href="/find-ingredient" class="text-sky-500 underline hover:no-underline"
+	>Find recipe by ingredients</a
+>
+<br />
+<a href="/find-search" class="text-sky-500 underline hover:no-underline">Find recipe by search</a>
+<br />
+<a href="/select" class="text-sky-500 underline hover:no-underline">View your mealplan</a>
 
 {#if recipes}
 	{#await recipes}
 		<p>loading...</p>
 	{:then recipes}
+		<h1 class="text-4xl ml-4 mb-3">Top 10 by rating</h1>
 		<div class="flex flex-wrap gap-4">
 			{#each recipes as recipe}
 				<div class="w-60 border-2 rounded-md p-1 px-2">

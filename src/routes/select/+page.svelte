@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Recipe, IngredientYield } from '../../app';
 	import { resolveImage, resolveRecipeUrl } from '$lib/db';
-	import { recipes, ingredients, have } from '$lib/stores/selection';
+	import { recipes, ingredients, have } from '$lib/stores/stores';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 
@@ -108,7 +108,7 @@
 	<br />
 {/each}
 
-<div class="w-screen flex justify-center items-center">
+<div class="flex justify-center items-center">
 	<div class="flex flex-col items-center">
 		<input
 			type="range"
