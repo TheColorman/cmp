@@ -1,5 +1,5 @@
 <script lang="ts">
-	// import type { Recipe, IngredientYield } from '../../app';
+	import type { Recipe, IngredientYield } from '../../app';
 	// import { resolveImage, resolveRecipeUrl } from '$lib/db';
 	import { recipes, ingredients, have } from '$lib/stores/stores';
 	// import { goto } from '$app/navigation';

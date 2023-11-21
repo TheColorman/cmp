@@ -86,7 +86,7 @@
 	}
 </script>
 
-<div class="w-screen items-center justify-center flex my-5">
+<div class="w-full items-center justify-center flex my-5">
 	<input
 		type="text"
 		placeholder="Search"
@@ -103,7 +103,7 @@
 	/>
 	<span>{numIngredients} required ingredients</span>
 </div>
-<div class="w-screen flex text-center">
+<div class="w-full flex text-center">
 	<div class="w-1/2">
 		<!-- <button class="btn btn-primary" on:click={() => send()}>Get recipes</button> -->
 		<h2 class="text-lg font-medium">Search</h2>
@@ -175,13 +175,16 @@
 	</div>
 </div>
 
-<div class="w-screen flex justify-center">
+<div class="w-full flex justify-center">
 	<button class="btn btn-primary" on:click={() => searchRecipes()}>Find recipes</button>
 </div>
 {#if recipes}
 	{#await recipes}
 		<p>loading...</p>
 	{:then recipes}
+		{#if recipes.length === 0}
+			<p>No recipes found</p>
+		{/if}
 		<div class="flex flex-wrap gap-4">
 			{#each recipes as recipe}
 				<div class="w-60 border-2 rounded-md p-1 px-2">
@@ -205,6 +208,14 @@
 							/>
 						{/if}
 					</button>
+					<a
+						href={resolveRecipeUrl(recipe.id, recipe.slug)}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="link link-primary"
+					>
+						Full recipe
+					</a>
 				</div>
 			{/each}
 		</div>

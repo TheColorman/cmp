@@ -152,6 +152,18 @@ function getRecipeIngredientYield(recipeId: string, yields: 2 | 4) {
 
 	return db.prepare(query).all(params) as (IngredientPartial & YieldPartial)[];
 }
+function getIngredientUnit(ingredientID: IngredientID) {
+	const query = `
+	SELECT
+		unit
+	FROM ingredients
+	JOIN recipes_yields ON recipes_yields.ingredientId = ingredients.id
+	WHERE ingredients.id = ?
+	`;
+	const params: (string | number)[] = [ingredientID];
+
+	return db.prepare(query).get(params) as { unit: string };
+}
 
 export const dbHelpers = {
 	recipes: {
@@ -177,7 +189,8 @@ export const dbHelpers = {
 		]
 	},
 	ingredients: {
-		search: searchIngredients
+		search: searchIngredients,
+		unit: getIngredientUnit
 	}
 };
 

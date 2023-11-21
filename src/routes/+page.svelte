@@ -10,14 +10,6 @@
 	});
 </script>
 
-<a href="/find-ingredient" class="text-sky-500 underline hover:no-underline"
-	>Find recipe by ingredients</a
->
-<br />
-<a href="/find-search" class="text-sky-500 underline hover:no-underline">Find recipe by search</a>
-<br />
-<a href="/select" class="text-sky-500 underline hover:no-underline">View your mealplan</a>
-
 {#if recipes}
 	{#await recipes}
 		<p>loading...</p>

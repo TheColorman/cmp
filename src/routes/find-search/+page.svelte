@@ -76,8 +76,14 @@
 				{#each recipes as recipe}
 					<div class="w-60 border-2 rounded-md p-1 px-2 flex flex-col justify-between">
 						<div>
-							<h2 class="font-bold">
-								{recipe.name}
+							<h2 class="font-bold link link-primary">
+								<a
+									href={resolveRecipeUrl(recipe.id, recipe.slug)}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									{recipe.name}
+								</a>
 							</h2>
 							<p class="font-thin">{recipe.headline}</p>
 							{#if recipe.imagePath}
