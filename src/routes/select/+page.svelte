@@ -11,7 +11,7 @@
 	}
 
 	if ($recipes.length === 0 && browser) {
-		goto('/find');
+		goto('/find-ingredient');
 	}
 
 	$: left = $ingredients.map((i, index) => $have[index] - i.amount);
