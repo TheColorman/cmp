@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  cmp:
+    build: .
+    container_name: CMP
+    restart: unless-stopped
+    environment:
+      - ORIGIN=http://localhost:4000
+    ports:
+      - 4000:3000
