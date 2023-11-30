@@ -151,6 +151,14 @@
 							/>
 						{/if}
 					</button>
+					<a
+						href={resolveRecipeUrl(recipe.id, recipe.slug)}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="link link-primary"
+					>
+						Full recipe
+					</a>
 				</div>
 			{/each}
 		</div>
