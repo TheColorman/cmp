@@ -9,7 +9,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"dockerbuild": "docker buildx build --push --platform linux/arm64/v8,linux/amd64 --tag c0lorman/cmp:latest ."
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
