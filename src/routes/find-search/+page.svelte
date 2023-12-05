@@ -42,7 +42,7 @@
 			const index = $ingredientsStore.findIndex((i: IngredientYield) => i.id === ingredient.id);
 			if (index === -1) {
 				ingredientsStore.update((i: IngredientYield[]) => [...i, ingredient]);
-				haveStore.update((h: number[]) => [...h, ingredient.amount]);
+				haveStore.update((h: number[]) => [...h, 0]);
 				continue;
 			}
 			$ingredientsStore[index].amount += ingredient.amount;
